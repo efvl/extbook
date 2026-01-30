@@ -6,8 +6,8 @@
 
     <changeSet id="exb-create-language-table" author="evv">
         <createTable tableName="language">
-            <column name="id" type="INT8" autoIncrement="true">
-                <constraints primaryKey="true"/>
+            <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="short_name" type="VARCHAR(255)"/>
             <column name="full_name" type="VARCHAR(255)"/>
