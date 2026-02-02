@@ -6,6 +6,7 @@ import com.evv.extbook.dto.CreateBookRequest;
 import com.evv.extbook.entity.Book;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", uses = LanguageMapper.class, unmappedTargetPolicy = ReportingPolicy.ERROR)
@@ -25,5 +26,9 @@ public interface BookMapper {
     // Entity → response
     @Mapping(source = "language", target = "language")
     BookResponse toResponse(Book book);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "language", ignore = true)
+    void updateEntity(CreateBookRequest request, @MappingTarget Book book);
 
 }

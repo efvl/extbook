@@ -8,10 +8,11 @@ import com.evv.extbook.mapper.WordMapper;
 import com.evv.extbook.repository.BookRepository;
 import com.evv.extbook.repository.WordRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -54,11 +55,37 @@ public class WordServiceImpl implements WordService {
     }
 
     @Override
+    public WordResponse update(UUID id, CreateWordRequest request) {
+        Word word = wordRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Word not found"));
+        wordMapper.updateEntity(request, word);
+        if (!word.getBook().getId().equals(request.bookId())) {
+            Book book = bookRepository.findById(request.bookId())
+                    .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+            word.setBook(book);
+        }
+        return wordMapper.toResponse(word);
+    }
+
+    @Override
+    public void delete(UUID id) {
+        if (!wordRepository.existsById(id)) {
+            throw new EntityNotFoundException("Word not found");
+        }
+        wordRepository.deleteById(id);
+    }
+
+    @Override
     @Transactional(readOnly = true)
-    public List<WordResponse> selectAll() {
-        return wordRepository.findAll()
-                .stream()
-                .map(wordMapper::toResponse)
-                .toList();
+    public Page<WordResponse> findByBookId(UUID bookId, Pageable pageable) {
+        return wordRepository.findByBook_Id(bookId, pageable)
+                .map(wordMapper::toResponse);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<WordResponse> selectAll(Pageable pageable) {
+        return wordRepository.findAll(pageable)
+                .map(wordMapper::toResponse);
     }
 }

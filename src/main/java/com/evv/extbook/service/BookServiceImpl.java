@@ -8,6 +8,8 @@ import com.evv.extbook.mapper.BookMapper;
 import com.evv.extbook.repository.BookRepository;
 import com.evv.extbook.repository.LanguageRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,11 +53,37 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookResponse> selectAll() {
-        return bookRepository.findAll()
-                .stream()
-                .map(bookMapper::toResponse)
-                .toList();
+    public Page<BookResponse> selectAll(Pageable pageable) {
+        return bookRepository.findAll(pageable)
+                .map(bookMapper::toResponse);
+    }
+
+    @Override
+    public BookResponse update(UUID id, CreateBookRequest request) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+        bookMapper.updateEntity(request, book);
+        if (!book.getLanguage().getId().equals(request.languageId())) {
+            Language language = languageRepository.findById(request.languageId())
+                    .orElseThrow(() -> new EntityNotFoundException("Language not found"));
+            book.setLanguage(language);
+        }
+        return bookMapper.toResponse(book);
+    }
+
+    @Override
+    public void delete(UUID id) {
+        if (!bookRepository.existsById(id)) {
+            throw new EntityNotFoundException("Book not found");
+        }
+        bookRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<BookResponse> findByLanguageId(UUID languageId, Pageable pageable) {
+        return bookRepository.findByLanguage_Id(languageId, pageable)
+                .map(bookMapper::toResponse);
     }
 
 }

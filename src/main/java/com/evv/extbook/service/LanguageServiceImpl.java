@@ -4,10 +4,11 @@ import com.evv.extbook.dto.LanguageDto;
 import com.evv.extbook.mapper.LanguageMapper;
 import com.evv.extbook.repository.LanguageRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -32,10 +33,9 @@ public class LanguageServiceImpl implements LanguageService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<LanguageDto> selectAll() {
-        return languageRepository.findAll().stream()
-                .map(languageMapper::toDto)
-                .toList();
+    public Page<LanguageDto> selectAll(Pageable pageable) {
+        return languageRepository.findAll(pageable)
+                .map(languageMapper::toDto);
     }
 
 }

@@ -1,14 +1,15 @@
 package com.evv.extbook.service;
 
 import com.evv.extbook.dto.LanguageDto;
-import java.util.List;
-import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
 
 public interface LanguageService {
 
     LanguageDto findById(UUID id);
 
-    List<LanguageDto> selectAll();
+    Page<LanguageDto> selectAll(Pageable pageable);
 
 }
