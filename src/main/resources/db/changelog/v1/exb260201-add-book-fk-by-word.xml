@@ -1,0 +1,15 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="exb-add-book-fk-by-word" author="evv">
+        <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="word"
+                                 constraintName="fk_word_book"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="book"/>
+        <createIndex tableName="word" indexName="idx_word_book">
+            <column name="book_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

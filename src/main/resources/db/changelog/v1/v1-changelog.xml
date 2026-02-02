@@ -7,4 +7,8 @@
     <include file="exb260130-enable-UUID-generation.xml" relativeToChangelogFile="true"/>
     <include file="exb260130-create-language-table.xml" relativeToChangelogFile="true"/>
     <include file="exb260130-add-default-languages-values.xml" relativeToChangelogFile="true"/>
+    <include file="exb260201-create-book-table.xml" relativeToChangelogFile="true"/>
+    <include file="exb260201-create-word-table.xml" relativeToChangelogFile="true"/>
+    <include file="exb260201-add-lang-fk-to-book.xml" relativeToChangelogFile="true"/>
+    <include file="exb260201-add-book-fk-by-word.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

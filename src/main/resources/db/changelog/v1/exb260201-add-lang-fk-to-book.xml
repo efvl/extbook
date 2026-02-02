@@ -1,0 +1,15 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="exb-add-lang-fk-to-book" author="evv">
+        <addForeignKeyConstraint baseColumnNames="lang_id" baseTableName="book"
+                                 constraintName="fk_book_lang"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="language"/>
+        <createIndex tableName="book" indexName="idx_book_lang">
+            <column name="lang_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

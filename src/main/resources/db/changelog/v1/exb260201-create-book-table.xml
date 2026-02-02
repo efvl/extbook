@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="exb-create-book-table" author="evv">
+        <createTable tableName="book">
+            <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="lang_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="varchar(256)"/>
+            <column name="authors" type="varchar(256)"/>
+            <column name="year" type="int8"/>
+            <column name="info" type="varchar(256)"/>
+            <column name="isbn" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

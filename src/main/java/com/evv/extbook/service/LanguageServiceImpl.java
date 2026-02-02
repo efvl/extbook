@@ -5,11 +5,13 @@ import com.evv.extbook.mapper.LanguageMapper;
 import com.evv.extbook.repository.LanguageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class LanguageServiceImpl implements LanguageService {
 
     private final LanguageRepository languageRepository;
@@ -21,6 +23,7 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public LanguageDto findById(UUID id) {
         return languageRepository.findById(id)
                 .map(languageMapper::toDto)
@@ -28,6 +31,7 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<LanguageDto> selectAll() {
         return languageRepository.findAll().stream()
                 .map(languageMapper::toDto)
